@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ГлавСтрой — БЭМ демо</title>
+  <style>
+    /* =====================================================
+       КТ4: БЭМ — Строительная компания
+       Методология: Блок__Элемент--Модификатор
+       ===================================================== */
+
+    /* ── Сброс и базовые стили ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      background: #f5f4f0;
+      color: #1a1a1a;
+    }
+
+    /* =======================================================
+       БЛОК: header
+       Описание: шапка сайта
+       ======================================================= */
+    .header {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    /* Элемент: header__logo */
+    .header__logo {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    /* Элемент: header__logo-accent */
+    .header__logo-accent {
+      color: #e8a838;
+    }
+
+    /* Элемент: header__nav */
+    .header__nav {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    /* Элемент: header__nav-link */
+    .header__nav-link {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    .header__nav-link:hover { color: #e8a838; }
+
+    /* =======================================================
+       БЛОК: hero
+       Описание: главный баннер страницы
+       ======================================================= */
+    .hero {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 72px 40px 80px;
+      text-align: center;
+    }
+
+    /* Элемент: hero__label */
+    .hero__label {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #e8a838;
+      margin-bottom: 16px;
+    }
+
+    /* Элемент: hero__title */
+    .hero__title {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    /* Элемент: hero__subtitle */
+    .hero__subtitle {
+      font-size: 18px;
+      color: #aaa;
+      margin-bottom: 40px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Элемент: hero__actions */
+    .hero__actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    /* =======================================================
+       БЛОК: button
+       Описание: универсальная кнопка
+       ======================================================= */
+    .button {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    /* Модификатор: button--primary */
+    .button--primary {
+      background: #e8a838;
+      color: #1a1a2e;
+      border-color: #e8a838;
+    }
+    .button--primary:hover {
+      background: #d4952a;
+      border-color: #d4952a;
+    }
+
+    /* Модификатор: button--outline */
+    .button--outline {
+      background: transparent;
+      color: #fff;
+      border-color: #fff;
+    }
+    .button--outline:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* Модификатор: button--small */
+    .button--small {
+      padding: 8px 18px;
+      font-size: 13px;
+    }
+
+    /* =======================================================
+       БЛОК: stats
+       Описание: строка с числовыми показателями
+       ======================================================= */
+    .stats {
+      background: #e8a838;
+      padding: 32px 40px;
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+    }
+
+    /* Элемент: stats__item */
+    .stats__item {
+      text-align: center;
+    }
+
+    /* Элемент: stats__value */
+    .stats__value {
+      font-size: 36px;
+      font-weight: 700;
+      color: #1a1a2e;
+      line-height: 1;
+    }
+
+    /* Элемент: stats__label */
+    .stats__label {
+      font-size: 13px;
+      color: #5a4010;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* =======================================================
+       БЛОК: section
+       Описание: смысловой раздел страницы
+       ======================================================= */
+    .section {
+      padding: 64px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Элемент: section__header */
+    .section__header {
+      margin-bottom: 40px;
+    }
+
+    /* Элемент: section__title */
+    .section__title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+
+    /* Элемент: section__subtitle */
+    .section__subtitle {
+      font-size: 15px;
+      color: #888;
+      margin-top: 8px;
+    }
+
+    /* =======================================================
+       БЛОК: project-grid
+       Описание: сетка карточек проектов
+       ======================================================= */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    /* =======================================================
+       БЛОК: project-card
+       Описание: карточка одного проекта
+       ======================================================= */
+    .project-card {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e0ddd5;
+      transition: box-shadow 0.2s;
+    }
+    .project-card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+    }
+
+    /* Модификатор: project-card--featured (выделенная карточка) */
+    .project-card--featured {
+      border-color: #e8a838;
+      border-width: 2px;
+    }
+
+    /* Элемент: project-card__image */
+    .project-card__image {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+      background: #1a1a2e;
+    }
+
+    /* Элемент: project-card__image — заглушка с буквой */
+    .project-card__image--placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: #e8a838;
+      background: #1a1a2e;
+    }
+
+    /* Элемент: project-card__body */
+    .project-card__body {
+      padding: 20px;
+    }
+
+    /* Элемент: project-card__tag */
+    .project-card__tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #e8a838;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    /* Элемент: project-card__title */
+    .project-card__title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+    }
+
+    /* Элемент: project-card__description */
+    .project-card__description {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    /* Элемент: project-card__footer */
+    .project-card__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f0ede6;
+      padding-top: 14px;
+    }
+
+    /* Элемент: project-card__budget */
+    .project-card__budget {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+
+    /* =======================================================
+       БЛОК: badge
+       Описание: бейдж статуса
+       ======================================================= */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Модификатор: badge--active */
+    .badge--active {
+      background: #e6f4ea;
+      color: #2d7a3a;
+    }
+
+    /* Модификатор: badge--done */
+    .badge--done {
+      background: #e8f0fe;
+      color: #1a56b0;
+    }
+
+    /* Модификатор: badge--frozen */
+    .badge--frozen {
+      background: #f0ede6;
+      color: #8a7a60;
+    }
+
+    /* =======================================================
+       БЛОК: contractor-list
+       Описание: список подрядчиков
+       ======================================================= */
+    .contractor-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* =======================================================
+       БЛОК: contractor-item
+       Описание: строка подрядчика
+       ======================================================= */
+    .contractor-item {
+      background: #fff;
+      border: 1px solid #e0ddd5;
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Модификатор: contractor-item--lead (ведущий подрядчик) */
+    .contractor-item--lead {
+      border-left: 4px solid #e8a838;
+    }
+
+    /* Элемент: contractor-item__avatar */
+    .contractor-item__avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #1a1a2e;
+      color: #e8a838;
+      font-weight: 700;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Элемент: contractor-item__info */
+    .contractor-item__info {
+      flex: 1;
+    }
+
+    /* Элемент: contractor-item__name */
+    .contractor-item__name {
+      font-weight: 700;
+      font-size: 15px;
+      color: #1a1a2e;
+    }
+
+    /* Элемент: contractor-item__spec */
+    .contractor-item__spec {
+      font-size: 13px;
+      color: #888;
+    }
+
+    /* Элемент: contractor-item__rate */
+    .contractor-item__rate {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a2e;
+      white-space: nowrap;
+    }
+
+    /* =======================================================
+       БЛОК: budget-bar
+       Описание: индикатор расхода бюджета
+       ======================================================= */
+    .budget-bar {
+      background: #fff;
+      border: 1px solid #e0ddd5;
+      border-radius: 8px;
+      padding: 20px 24px;
+    }
+
+    /* Элемент: budget-bar__header */
+    .budget-bar__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    /* Элемент: budget-bar__title */
+    .budget-bar__title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+
+    /* Элемент: budget-bar__amount */
+    .budget-bar__amount {
+      font-size: 13px;
+      color: #888;
+    }
+
+    /* Элемент: budget-bar__track */
+    .budget-bar__track {
+      height: 8px;
+      background: #f0ede6;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    /* Элемент: budget-bar__fill */
+    .budget-bar__fill {
+      height: 100%;
+      border-radius: 4px;
+      background: #e8a838;
+      transition: width 0.4s;
+    }
+
+    /* Модификатор: budget-bar__fill--warning (> 80%) */
+    .budget-bar__fill--warning {
+      background: #e05c2a;
+    }
+
+    /* Элемент: budget-bar__meta */
+    .budget-bar__meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    /* =======================================================
+       БЛОК: footer
+       Описание: подвал страницы
+       ======================================================= */
+    .footer {
+      background: #1a1a2e;
+      color: #888;
+      padding: 32px 40px;
+      text-align: center;
+      font-size: 13px;
+      margin-top: 40px;
+    }
+
+    /* Элемент: footer__brand */
+    .footer__brand {
+      color: #e8a838;
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    /* ── Вспомогательные утилиты (не БЭМ — намеренно отдельно) ── */
+    .page-bg { background: #f5f4f0; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  </style>
+</head>
+<body class="page-bg">
+
+  <!-- ══ БЛОК: header ══════════════════════════════════════ -->
+  <header class="header">
+    <a href="#" class="header__logo">
+      Глав<span class="header__logo-accent">Строй</span>
+    </a>
+    <ul class="header__nav">
+      <li><a href="#projects" class="header__nav-link">Проекты</a></li>
+      <li><a href="#contractors" class="header__nav-link">Подрядчики</a></li>
+      <li><a href="#budget" class="header__nav-link">Бюджеты</a></li>
+    </ul>
+  </header>
+
+  <!-- ══ БЛОК: hero ════════════════════════════════════════ -->
+  <section class="hero">
+    <p class="hero__label">Строительная компания</p>
+    <h1 class="hero__title">Жилые объекты<br>под ключ</h1>
+    <p class="hero__subtitle">Квартирные дома, коттеджи и таунхаусы — от проекта до сдачи</p>
+    <div class="hero__actions">
+      <!-- БЛОК: button с модификаторами -->
+      <a href="#projects" class="button button--primary">Смотреть проекты</a>
+      <a href="#contractors" class="button button--outline">Наши подрядчики</a>
+    </div>
+  </section>
+
+  <!-- ══ БЛОК: stats ═══════════════════════════════════════ -->
+  <div class="stats">
+    <div class="stats__item">
+      <div class="stats__value">47</div>
+      <div class="stats__label">Завершённых объектов</div>
+    </div>
+    <div class="stats__item">
+      <div class="stats__value">12</div>
+      <div class="stats__label">В работе сейчас</div>
+    </div>
+    <div class="stats__item">
+      <div class="stats__value">8</div>
+      <div class="stats__label">Подрядчиков</div>
+    </div>
+    <div class="stats__item">
+      <div class="stats__value">15</div>
+      <div class="stats__label">Лет на рынке</div>
+    </div>
+  </div>
+
+  <!-- ══ БЛОК: section + project-grid ═════════════════════ -->
+  <div id="projects">
+    <div class="section">
+      <div class="section__header">
+        <h2 class="section__title">Текущие проекты</h2>
+        <p class="section__subtitle">Жилые объекты в работе и завершённые</p>
+      </div>
+
+      <div class="project-grid">
+
+        <!-- project-card (обычная) -->
+        <div class="project-card">
+          <div class="project-card__image project-card__image--placeholder">🏢</div>
+          <div class="project-card__body">
+            <div class="project-card__tag">Многоквартирный дом</div>
+            <h3 class="project-card__title">ЖК Радуга</h3>
+            <p class="project-card__description">12 этажей, 48 квартир, общая площадь 3 120 м²</p>
+            <div class="project-card__footer">
+              <span class="project-card__budget">500 млн ₽</span>
+              <!-- БЛОК: badge с модификатором -->
+              <span class="badge badge--active">В работе</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- project-card--featured (выделенная) -->
+        <div class="project-card project-card--featured">
+          <div class="project-card__image project-card__image--placeholder">🏡</div>
+          <div class="project-card__body">
+            <div class="project-card__tag">Коттедж</div>
+            <h3 class="project-card__title">Сосновый коттедж</h3>
+            <p class="project-card__description">Площадь 205 м², гараж, участок 12 соток</p>
+            <div class="project-card__footer">
+              <span class="project-card__budget">12 млн ₽</span>
+              <span class="badge badge--done">Завершён</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- project-card (обычная) -->
+        <div class="project-card">
+          <div class="project-card__image project-card__image--placeholder">🏘</div>
+          <div class="project-card__body">
+            <div class="project-card__tag">Таунхаус</div>
+            <h3 class="project-card__title">Таунхаус Берёза</h3>
+            <p class="project-card__description">6 секций по 120 м², паркинг во дворе</p>
+            <div class="project-card__footer">
+              <span class="project-card__budget">38 млн ₽</span>
+              <span class="badge badge--frozen">Заморожен</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ БЛОК: section — два столбца ══════════════════════ -->
+  <div id="contractors" style="background:#fff; border-top: 1px solid #e0ddd5;">
+    <div class="section">
+      <div class="two-col">
+
+        <!-- Левый столбец: подрядчики -->
+        <div>
+          <div class="section__header">
+            <h2 class="section__title">Подрядчики</h2>
+            <p class="section__subtitle">Ключевые партнёры на объектах</p>
+          </div>
+
+          <!-- БЛОК: contractor-list -->
+          <div class="contractor-list">
+
+            <!-- contractor-item--lead -->
+            <div class="contractor-item contractor-item--lead">
+              <div class="contractor-item__avatar">СГ</div>
+              <div class="contractor-item__info">
+                <div class="contractor-item__name">СтройГрупп ООО</div>
+                <div class="contractor-item__spec">Общестроительные работы</div>
+              </div>
+              <div class="contractor-item__rate">85 000 ₽/м²</div>
+            </div>
+
+            <div class="contractor-item">
+              <div class="contractor-item__avatar">ЭМ</div>
+              <div class="contractor-item__info">
+                <div class="contractor-item__name">ЭлектроМонтаж</div>
+                <div class="contractor-item__spec">Электромонтажные работы</div>
+              </div>
+              <div class="contractor-item__rate">12 000 ₽/м²</div>
+            </div>
+
+            <div class="contractor-item">
+              <div class="contractor-item__avatar">АС</div>
+              <div class="contractor-item__info">
+                <div class="contractor-item__name">АкваСервис</div>
+                <div class="contractor-item__spec">Сантехнические работы</div>
+              </div>
+              <div class="contractor-item__rate">15 000 ₽/м²</div>
+            </div>
+
+            <!-- button--small -->
+            <a href="#" class="button button--primary button--small" style="align-self:flex-start; margin-top:8px;">
+              Добавить подрядчика
+            </a>
+          </div>
+        </div>
+
+        <!-- Правый столбец: бюджеты -->
+        <div id="budget">
+          <div class="section__header">
+            <h2 class="section__title">Бюджеты</h2>
+            <p class="section__subtitle">Использование средств по проектам</p>
+          </div>
+
+          <!-- БЛОК: budget-bar -->
+          <div style="display:flex; flex-direction:column; gap:16px;">
+
+            <div class="budget-bar">
+              <div class="budget-bar__header">
+                <span class="budget-bar__title">ЖК Радуга</span>
+                <span class="budget-bar__amount">245 млн / 500 млн ₽</span>
+              </div>
+              <div class="budget-bar__track">
+                <div class="budget-bar__fill" style="width: 49%"></div>
+              </div>
+              <div class="budget-bar__meta">
+                <span>Потрачено 49%</span>
+                <span>Остаток 255 млн ₽</span>
+              </div>
+            </div>
+
+            <div class="budget-bar">
+              <div class="budget-bar__header">
+                <span class="budget-bar__title">Сосновый коттедж</span>
+                <span class="budget-bar__amount">11.8 млн / 12 млн ₽</span>
+              </div>
+              <div class="budget-bar__track">
+                <!-- budget-bar__fill--warning: > 80% -->
+                <div class="budget-bar__fill budget-bar__fill--warning" style="width: 98%"></div>
+              </div>
+              <div class="budget-bar__meta">
+                <span>Потрачено 98%</span>
+                <span>Остаток 0.2 млн ₽</span>
+              </div>
+            </div>
+
+            <div class="budget-bar">
+              <div class="budget-bar__header">
+                <span class="budget-bar__title">Таунхаус Берёза</span>
+                <span class="budget-bar__amount">12 млн / 38 млн ₽</span>
+              </div>
+              <div class="budget-bar__track">
+                <div class="budget-bar__fill" style="width: 32%"></div>
+              </div>
+              <div class="budget-bar__meta">
+                <span>Потрачено 32%</span>
+                <span>Остаток 26 млн ₽</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ БЛОК: footer ══════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer__brand">ГлавСтрой</div>
+    <p>КТ4 — демонстрация методологии БЭМ · Блок · Элемент · Модификатор</p>
+  </footer>
+
+</body>
+</html>
